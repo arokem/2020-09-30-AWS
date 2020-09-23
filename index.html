@@ -1,0 +1,1469 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta name="description" content="Talk at UW Psych Seminar">
+		<meta name="author" content="Ariel Rokem">
+
+		<title> Haystacks and forests </title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/arokem.css">
+		<link rel="stylesheet" href="css/custom.css">
+        <link rel="stylesheet" href="https://cdn.pydata.org/bokeh/release/bokeh-1.1.0.min.css" type="text/css" />
+        <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-1.1.0.min.js"></script>
+
+        <script type="text/javascript">
+            Bokeh.set_log_level("info");
+        </script>
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<script>
+            function canvas_arrow_two_heads(context, fromx, fromy, tox, toy){
+                let headlen = 10;   // length of head in pixels
+                let angle = Math.atan2(toy-fromy,tox-fromx);
+                context.moveTo(fromx, fromy);
+                context.lineTo(fromx+headlen*Math.cos(angle+Math.PI/6),fromy+headlen*Math.sin(angle+Math.PI/6));
+                context.moveTo(fromx, fromy);
+                context.lineTo(fromx+headlen*Math.cos(angle-Math.PI/6),fromy+headlen*Math.sin(angle-Math.PI/6));
+                context.moveTo(fromx, fromy);
+                context.lineTo(tox, toy);
+                context.lineTo(tox-headlen*Math.cos(angle-Math.PI/6),toy-headlen*Math.sin(angle-Math.PI/6));
+                context.moveTo(tox, toy);
+                context.lineTo(tox-headlen*Math.cos(angle+Math.PI/6),toy-headlen*Math.sin(angle+Math.PI/6));}
+        </script>
+
+	</head>
+	<body>
+	<div class="reveal">
+	<div class="slides">
+
+	<section>
+		<em>
+		<h2>Finding needles in haystacks and seeing the forest from the trees</h2>
+        </em>
+        <h4>Relating brain connections and behavior without getting lost in the data</h4>
+		<br>May 6th, 2020
+		<br>Department of Psychology, University of Washington
+		<br>
+		<p><a href="http://arokem.org">Ariel Rokem</a>,
+		<a href="http://escience.washington.edu">University of Washington eScience Institute</a> </p>
+		<p>  <small>Follow along at: <t><a href="https://arokem.github.io/2020-UW-Psych">https://arokem.github.io/2020-UW-Psych</t></a></small></p>
+		<a href="https://escience.washington.edu"><img src="img/eScience.png" height="100px" alt="eScience logo" align="middle"></a>
+		<br>
+		<img src="img/cc-by.png" height="30px" alt="License" align="middle">
+    </section>
+
+
+    <section>
+        <h4>How do we relate brain to behavior?</h4>
+        <img src="./img/white-matter-connections.gif">
+        <div class="cite" style="position: absolute; left:400px;">
+            Image from <a href="https://www.nature.com/articles/s41467-018-03297-7">Yeatman, Richie-Halford, Smith, Keshavan, <b>Rokem</b> (2018)</a>
+        </div>
+    </section>
+
+    <section>
+        <h3>The era of brain observatories</h3>
+         <div class="row fragment fade-in">
+                <div class="col-13 textcol">
+                    <img class="logo" src="img/aibs-logo.png" width="200" align="middle" alt="" border="0">
+                </div>
+                <div class="textcol col-23">
+                    <ul>
+                    <p>
+                        Allen Institute for Brain Science<br>
+                    </p>
+                    </ul>
+            </div>
+        </div>
+
+        <div class="row fragment fade-in">
+            <div class="col-13 textcol">
+            <img class="logo" src="img/hcp-logo.jpg" width="200" align="middle" alt="Human Connectome Project logo" border="0">
+            </div>
+            <div class="textcol col-23">
+            <ul>
+                <p>
+                Human Connectome Project (HCP), N = 1,200
+                </p>
+            </ul>
+            </div>
+        </div>
+
+        <div class="row fragment fade-in">
+            <div class="col-13 textcol">
+            <img class="logo" src="img/abcd-logo.png" width="300" align="middle" alt="Adolescent Brain Cognitive Development logo">
+            </div>
+            <div class="textcol col-23">
+            <ul>
+                <p>
+                Adolescent Brain Cognitive Development (ABCD), <br> N = 10,000
+                </p>
+            </ul>
+            </div>
+        </div>
+
+        <div class="row fragment fade-in">
+            <div class="col-13 textcol">
+            <img class="logo" src="img/child-mind-institute-hbn-logo.jpg" width="200" align="middle" alt="Healthy Brain Network logo">
+            </div>
+            <div class="textcol col-23">
+            <ul>
+                <p>
+                Healthy Brain Network (HBN),&nbsp; N = 10,000
+                </p>
+            </ul>
+            </div>
+        </div>
+
+        <div class="row fragment fade-in">
+            <div class="col-13 textcol">
+            <img class="logo" src="img/biobank-logo.png" width="200" align="middle" alt="UK Biobank logo">
+            </div>
+            <div class="textcol col-23">
+            <ul>
+                <p>
+                UK Biobank, &nbsp; N = 500,000
+                </p>
+            </ul>
+            </div>
+        </div>
+    </section>
+
+
+    <section>
+        <h3>Human Connectome Project extensions</h3>
+        <p>Lifespan development</p>
+        <p>Brain aging and dementia</p>
+        <p>Alzheimer's subtypes</p>
+        <p>Anxiety and depression in teenagers</p>
+        <p>Amish Connectome (mental illness)</p>
+        <p>Low vision and blindness</p>
+    </section>
+
+
+    <section>
+		<h2>Opportunities</h2>
+        <p class="fragment">New data sets will enable important new discoveries</p>
+		<h3 class="fragment"><em>Data-driven discovery</em></h3>
+    </section>
+
+    <section>
+        <h2>Data-driven discovery</h2>
+        <p class="fragment">Automated processing (e.g., <a href="https://www.frontiersin.org/articles/10.3389/fninf.2019.00029/full">Keshavan, Yeatman and Rokem, 2019</a>)</p>
+        <p class="fragment">High-performance computing <br>(e.g., <a href="http://conference.scipy.org/proceedings/scipy2018/adam_richie-halford.html">Richie-Halford and Rokem, 2018 </a>, <a href="http://www.vldb.org/pvldb/vol10/p1226-mehta.pdf">Mehta et al., 2017</a>)</p>
+        <p class="fragment">Data integration (e.g., <a href="https://www.biorxiv.org/content/10.1101/2020.02.26.967208v1">Mehta et al., 2020</a>)</p>
+        <p class="fragment"><b>Machine learning and predictive modeling</b></p>
+    </section>
+
+    <section>
+        <h2>The accuracy/interpretability tradeoff </h2>
+        <img src="./img/Accuracy-interpretability-tradeoff-0.png" height="500">
+    </section>
+
+
+    <section>
+        <h2>The accuracy/interpretability tradeoff </h2>
+        <img src="./img/Accuracy-interpretability-tradeoff-1.png" height="500">
+    </section>
+
+    <section>
+        <h2>Outline</h2>
+        <div align="left">
+        <h3 class="fragment">Data-driven discovery in human neuroscience</h3>
+        <h4 class="fragment">Studying brain connections with diffusion MRI </h4>
+        <h4 class="fragment">Automated tract segmentation and tractometry</h4>
+        <h3 class="fragment">Applications</h3>
+        <h4 class="fragment">Amyotropic Lateral Sclerosis: finding a needle in a haystack</h4>
+        <h4 class="fragment">Brain development: seeing the forest and the trees</h4>
+        <h3 class="fragment">Expanding access to data-driven research</h3>
+        <h4 class="fragment">Publishing data and results in exploratory data visualizations</h4>
+        <h4 class="fragment">Developing open-source software</h4>
+
+        <h4 class="fragment">Training researchers from diverse backgrounds</h4>
+        </div>
+    </section>
+
+    <section>
+        <h2>Outline</h2>
+        <div align="left">
+        <h3>Data-driven discovery in human neuroscience</h3>
+        <h4>Studying brain connections with diffusion MRI </h4>
+        <h4 style="color:#D3D3D3;">Automated tract segmentation and tractometry</h4>
+        <h3 style="color:#D3D3D3;">Applications</h3>
+        <h4 style="color:#D3D3D3;">Amyotropic Lateral Sclerosis: finding a needle in a haystack</h4>
+        <h4 style="color:#D3D3D3;">Brain development: seeing the forest and the trees</h4>
+        <h3 style="color:#D3D3D3;">Expanding access to data-driven research</h3>
+        <h4 style="color:#D3D3D3;">Publishing data and results in exploratory data visualizations</h4>
+        <h4 style="color:#D3D3D3;">Developing open-source software</h4>
+        <h4 style="color:#D3D3D3;">Training researchers from diverse backgrounds</h4>
+        </div>
+    </section>
+
+    <section>
+        <h4>Brain networks</h4>
+        <img src="./img/white-matter-connections.gif">
+        <div class="cite" style="position: absolute; left:400px;">
+            Image from <a href="https://www.nature.com/articles/s41467-018-03297-7">Yeatman, Richie-Halford, Smith, Keshavan, <b>Rokem</b> (2018)</a>
+        </div>
+    </section>
+
+    <section>
+        <h3>Disconnectivity syndromes</h3>
+        <img src="./img/OldenDays.png" height="400">
+        <div class="cite">
+            Image from Catani and ffytche (2015)
+        </div>
+    </section>
+
+    <section>
+        <h2>Not just static cables!</h2>
+		<p class="fragment">Brain connections develop and mature with age</p>
+		<p class="fragment">Individual differences account for differences in behaviour</p>
+        <p class="fragment">Adapt and change with learning</p>
+        <p class="fragment">Brain network health is important for mental health</p>
+
+        <div class="cite" style="position: absolute; left:600px;">
+            Reviewed in <a href="http://jov.arvojournals.org/article.aspx?articleid=2603187"> <b>Rokem</b> et al. (2017), Journal of Vision</a>
+        </div>
+    </section>
+
+    <section>
+        <h4>Diffusion MRI measures the physical properties of brain connections </h4>
+		<video width="600" autoplay loop>
+			<source src="./img/diffusion-isotropic.mp4">
+		</video>
+
+		<div class="cite" style="position: absolute; left: 650px" >
+            <a href="http://jov.arvojournals.org/article.aspx?articleid=2603187"><b>Rokem</b> et al. (2017), Journal of Vision</a>
+            <br>
+			<a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0123272"><b>Rokem</b> et al. (2015), PLoS One</a>
+		</div>
+
+	</section>
+
+	<section>
+        <h4>Diffusion MRI</h4>
+
+		<div style="position: absolute; left: 14px;">
+			<img src="img/tensor-stats1.png" height="400"  >
+			<div style="position: absolute; left: 75px; top: 420px;">
+                <small>Mean diffusivity</small>
+
+			</div>
+			<div style="position: absolute; left: -8px;">
+				<img src="img/md-scale.png" height="40" >
+			</div>
+			<div style="position: absolute; left: 222px; top:432px; ">
+				<img src="img/md-units.png" height="50" >
+            </div>
+        </div>
+
+    </section>
+
+
+    <section>
+		<h4>Diffusion MRI</h4>
+		<div class = "fragment fade-in" style="position: absolute">
+			<canvas id="arrows-iso-horiz" width="1000" height="1000">
+			</canvas>
+			<script>
+				context = document.getElementById('arrows-iso-horiz').getContext("2d");
+				context.beginPath();
+				canvas_arrow_two_heads(context, 390, 450, 590, 450);
+				context.lineWidth = 2;
+				context.stroke();
+			</script>
+		</div>
+		<div class = "fragment fade-in" style="position: absolute">
+			<canvas id="arrows-iso-vert" width="1000" height="1000">
+			</canvas>
+			<script>
+				context = document.getElementById('arrows-iso-vert').getContext("2d");
+				context.beginPath();
+				canvas_arrow_two_heads(context, 250, 350, 250, 150);
+				context.lineWidth = 2;
+				context.stroke();
+			</script>
+		</div>
+
+		<div class="fragment" text-align: left>
+			Isotropic diffusion
+		</div>
+		<video width="600" autoplay loop>
+			<source src="./img/diffusion-isotropic.mp4">
+		</video>
+
+		<div class="cite" style="position: absolute; left: 650px" >
+            <a href="http://jov.arvojournals.org/article.aspx?articleid=2603187"><b>Rokem</b> et al. (2017), Journal of Vision</a>
+            <br>
+			<a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0123272"><b>Rokem</b> et al. (2015), PLoS One</a>
+		</div>
+
+	</section>
+
+	<section>
+		<h4>Diffusion MRI</h4>
+		<div class = "fragment fade-in" style="position: absolute">
+			<canvas id="arrows-aniso-horiz" width="1000" height="1000">
+			</canvas>
+			<script>
+				context = document.getElementById('arrows-aniso-horiz').getContext("2d");
+				context.beginPath();
+				canvas_arrow_two_heads(context, 370, 400, 610, 400);
+				context.lineWidth = 2;
+				context.stroke();
+			</script>
+		</div>
+
+        <div class = "fragment fade-in" style="position: absolute">
+                <canvas id="arrows-aniso-vert" width="1000" height="1000">
+                </canvas>
+                <script>
+                    context = document.getElementById('arrows-aniso-vert').getContext("2d");
+                    context.beginPath();
+                    canvas_arrow_two_heads(context, 250, 325, 250, 175);
+                    context.lineWidth = 2;
+                    context.stroke();
+                </script>
+        </div>
+
+		<div class="fragment" text-align:left;>
+			Anisotropic diffusion
+		</div>
+		<video width="600" autoplay loop>
+			<source src="./img/diffusion-anisotropic.mp4">
+		</video>
+		<div class="cite" style="position: absolute; left: 650px" >
+                <a href="http://jov.arvojournals.org/article.aspx?articleid=2603187"><b>Rokem</b> et al. (2017), Journal of Vision</a>
+                <br>
+                <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0123272"><b>Rokem</b> et al. (2015), PLoS One</a>
+            </div>
+        </section>
+
+	<section>
+        <h4>Diffusion MRI</h4>
+
+		<div style="position: absolute; left: 14px;">
+			<img src="img/tensor-stats1.png" height="400"  >
+			<div style="position: absolute; left: 75px; top: 420px;">
+				<small>Mean diffusivity</small>
+			</div>
+			<div style="position: absolute; left: -8px;">
+				<img src="img/md-scale.png" height="40" >
+			</div>
+			<div style="position: absolute; left: 222px; top:432px; ">
+				<img src="img/md-units.png" height="50" >
+			</div>
+		</div>
+		<div class="fragment fade-in" style="position: absolute; left: 7px;">
+			<img src="img/tensor-stats2.png" height="400"  >
+
+            <div style="position: absolute; left: 310px; top: 430px;">
+				<img src="img/fa-scale.png" height="120">
+			</div>
+
+			<div style="position: absolute; left: 350px; top: 420px;">
+				<small>Fractional anisotropy</small>
+			</div>
+
+		</div>
+		<div class="fragment fade-in" style="position: absolute; left: 0px;">
+			<img src="img/tensor-stats3.png" height="400"  >
+			<div style="position: absolute; left: 600px; top: 420px;">
+				<small>Principal diffusion direction</small>
+			</div>
+			<div style="position: absolute; left: 700px; top:432px; ">
+				<img src="img/axes.png" height="100" >
+			</div>
+		</div>
+		<div class="cite" style="position: absolute; top: 620px; left: 650px" >
+                <a href="http://jov.arvojournals.org/article.aspx?articleid=2603187"><b>Rokem</b> et al. (2017), Journal of Vision</a>
+                <br>
+                <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0123272"><b>Rokem</b> et al. (2015), PLoS One</a>
+            </div>
+    </section>
+
+
+    <section>
+        <h3>From diffusion to anatomy</h3>
+        <div style="position: absolute; left: 210px;">
+        <img src="img/axial_slice.png" height="505">
+        </div>
+
+        <div class = "fragment fade-in" style="position: absolute;">
+
+        <canvas id="zoom-box" width="1000" height="1000"></canvas>
+            <script>
+              var canvas = document.getElementById('zoom-box');
+              var context = canvas.getContext('2d');
+
+              context.beginPath(430, 200);
+              context.moveTo(430, 200);
+              context.lineTo(430, 250);
+              context.lineTo(480, 250);
+              context.lineTo(480, 200);
+              context.lineTo(430, 200);
+
+              context.lineWidth = 2;
+
+              // line color
+              context.strokeStyle = 'white';
+              context.stroke();
+            </script>
+          </div>
+          <div class="cite" style="position: absolute; left:0px top:500px">
+            <a href="https://www.frontiersin.org/articles/10.3389/fninf.2014.00008/full">Garyfallidis, Brett, Amirbekian, <b>Rokem</b>, van der Walt, Descoteaux, Nimmo Smith, and DIPY contributors (2014) Frontiers in Neuroinformatics</a>
+    </div>
+
+    </section>
+
+    <section>
+        <h3>From diffusion to anatomy</h3>
+        <div style="position: absolute;">
+        <img src="img/d2t-bkgrnd.png" style="background:none; border:none; box-shadow:none;" height="505", width="766">
+    </div>
+        <div class="fragment" style="position: absolute; left: 93px; top:47px;"><img src="img/tensor_ellipsoids.png" style="background:none; border:none; box-shadow:none; opacity:0.4; filter:alpha(opacity=40);">
+        </div>
+        <div class = "fragment fade-in" style="position: absolute;">
+        <canvas id="fiber" width="1000" height="1000"></canvas>
+            <script>
+              var canvas = document.getElementById('fiber');
+              var context = canvas.getContext('2d');
+
+              context.beginPath();
+              context.moveTo(590, 170);
+              context.bezierCurveTo(400, 300, 365, 80, 378, 65);
+              context.lineWidth = 10;
+
+              // line color
+              context.strokeStyle = 'yellow';
+              context.stroke();
+            </script>
+          </div>
+          <div class="cite" style="position: absolute; left:0px top:500px">
+            <a href="https://www.frontiersin.org/articles/10.3389/fninf.2014.00008/full">Garyfallidis, Brett, Amirbekian, <b>Rokem</b>, van der Walt, Descoteaux, Nimmo Smith, and DIPY contributors (2014) Frontiers in Neuroinformatics</a>
+        </div>
+    </section>
+
+    <section>
+        <h3>From diffusion to anatomy</h3>
+        <video width="500" autoplay loop>
+          <source src="./img/cc_tube_movie-373.mov">
+        </video>
+        <div class="cite" style="position: absolute; left:0px top:500px">
+            <a href="https://www.frontiersin.org/articles/10.3389/fninf.2014.00008/full">Garyfallidis, Brett, Amirbekian, <b>Rokem</b>, van der Walt, Descoteaux, Nimmo Smith, and DIPY contributors (2014) Frontiers in Neuroinformatics</a>
+    </div>
+    </section>
+    <section>
+        <h3>From diffusion to anatomy</h3>
+        <video width="500" autoplay loop>
+          <source src="./img/whole_brain.mp4">
+        </video>
+        <div class="cite" style="position: absolute; left:0px top:500px">
+            <a href="https://www.frontiersin.org/articles/10.3389/fninf.2014.00008/full">Garyfallidis, Brett, Amirbekian, <b>Rokem</b>, van der Walt, Descoteaux, Nimmo Smith, and DIPY contributors (2014) Frontiers in Neuroinformatics</a>
+    </div>
+    </section>
+
+    <section>
+        <h3>From diffusion to anatomy</h3>
+        <p>The 3D structure of each brain is unique</p>
+        <img src="./img/tract_groups.png" height="400">
+        <div class="cite">
+            <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4635921/">Thiebaut de Schotten (2015)</a>
+        </div>
+    </section>
+
+
+    <section>
+        <h2>Outline</h2>
+        <div align="left">
+        <h3>Data-driven discovery in human neuroscience</h3>
+        <h4 style="color:#D3D3D3;">Studying brain connections with diffusion MRI </h4>
+        <h4>Automated tract segmentation and tractometry</h4>
+        <h3 style="color:#D3D3D3;">Applications</h3>
+        <h4 style="color:#D3D3D3;">Amyotropic Lateral Sclerosis: finding a needle in a haystack</h4>
+        <h4 style="color:#D3D3D3;">Brain development: seeing the forest and the trees</h4>
+        <h3 style="color:#D3D3D3;">Expanding access to data-driven research</h3>
+        <h4 style="color:#D3D3D3;">Publishing data and results in exploratory data visualizations</h4>
+        <h4 style="color:#D3D3D3;">Developing open-source software</h4>
+
+        <h4 style="color:#D3D3D3;">Training researchers from diverse backgrounds</h4>
+        </div>
+    </section>
+
+
+    <section>
+        <h2>Automated tract segmentation</h2>
+        <a href="https://autofq.org">https://autofq.org</a>
+        <div class="row">
+            <div class="imgcite two-col">
+                <img align="center" src="img/AFQ-CST_L.gif" width="400">
+            </div>
+            <div class="imgcite two-col fragment">
+                <img align="center" src="img/AFQ-CST_R.gif" width="400">
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Automated tract segmentation</h2>
+        <a href="https://autofq.org">https://autofq.org</a>
+        <div class="row">
+            <div class="imgcite two-col">
+                <img align="center" src="img/AFQ-ARC_L.gif" width="400">
+            </div>
+            <div class="imgcite two-col fragment">
+                <img align="center" src="img/AFQ-ARC_R.gif" width="400">
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Automated tract segmentation</h2>
+        <a href="https://autofq.org">https://autofq.org</a>
+        <div class="row">
+            <div class="imgcite two-col">
+                <img align="center" src="img/AFQ-IFO_L.gif" width="400">
+            </div>
+            <div class="imgcite two-col fragment">
+                <img align="center" src="img/AFQ-IFO_R.gif" width="400">
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h3>Tractometry</h3>
+        <p>The tracts are the coordinate frame for quantitative analysis</p>
+        <img align="center" src="img/pyafq_segmentation1.gif" height="400">
+    </section>
+
+	<section>
+        <h3>Tractometry</h3>
+        <p>The tracts are the coordinate frame for quantitative analysis</p>
+        <img align="center" src="img/tractometry0.png" height="450">
+	</section>
+
+    <section>
+        <h3>Tractometry</h3>
+        <p>The tracts are the coordinate frame for quantitative analysis</p>
+        <img align="center" src="img/tractometry1.png" height="450">
+	</section>
+
+    <section>
+        <h3>Tractometry</h3>
+        <p>The tracts are the coordinate frame for quantitative analysis</p>
+        <img align="center" src="img/tractometry2.png" height="450">
+	</section>
+
+
+    <section>
+        <h3>Tractometry</h3>
+        <p>The tracts are the coordinate frame for quantitative analysis</p>
+        <img align="center" src="img/tractometry3.png" height="450">
+    </section>
+
+    <section>
+        <h3>Tractometry</h3>
+        <p>The tracts are the coordinate frame for quantitative analysis</p>
+        <img align="center" src="img/tractometry4.png" height="450">
+	</section>
+
+    <section>
+        <h3>Tractometry</h3>
+        <p>The tracts are the coordinate frame for quantitative analysis</p>
+        <div class="imgcite two-col fragment" style="position:absolute; top:100px; left:80px;">
+            <img align="center" src="img/tractometry6_1_1.png" height="450">
+	    </div>
+        <div class="imgcite two-col fragment" style="position:absolute; top:100px; left:80px;">
+            <img align="center" src="img/tractometry6_1_2.png" height="450">
+	    </div>
+        <div class="imgcite two-col fragment" style="position:absolute; top:120px; left:450px;">
+            <img align="center" src="img/tractometry6_2.png" height="450">
+	    </div>
+
+    </section>
+
+    <section>
+        <h2>Outline</h2>
+        <div align="left">
+        <h3 style="color:#D3D3D3;">Data-driven discovery in human neuroscience</h3>
+        <h4 style="color:#D3D3D3;">Studying brain connections with diffusion MRI </h4>
+        <h4 style="color:#D3D3D3;">Automated tract segmentation and tractometry</h4>
+        <h3>Applications</h3>
+        <h4>Amyotropic Lateral Sclerosis: finding a needle in a haystack</h4>
+        <h4 style="color:#D3D3D3;">Brain development: seeing the forest and the trees</h4>
+        <h3 style="color:#D3D3D3;">Expanding access to data-driven research</h3>
+        <h4 style="color:#D3D3D3;">Publishing data and results in exploratory data visualizations</h4>
+        <h4 style="color:#D3D3D3;">Developing open-source software</h4>
+
+        <h4 style="color:#D3D3D3;">Training researchers from diverse backgrounds</h4>
+        </div>
+    </section>
+
+
+    <section>
+        <h2>Amyotrophic Lateral Sclerosis (ALS)</h2>
+        <div class="row">
+            <div class="imgcite two-col" style="position:absolute; top:100px; left:100px;">
+                <img src="img/LouGehrigGoudeycard.jpg" width="250" align="middle">
+        </div>
+        <div class="imgcite two-col fragment" style="position:absolute; top:100px; left:450px;">
+            <p class="fragment">Neurodegenerative disease</p>
+            <p class="fragment">Affects motor neurons</p>
+            <p class="fragment">Etiology varies widely</p>
+        </div>
+        </div>
+    </section>
+
+    <section>
+        <div style="position:absolute; top:49px; left:-3px;">
+            <img src="img/pyafq_segmentation1.gif" height=460>
+        </div>
+    </section>
+
+    <section>
+        <h3>Tractometry for group comparison</h3>
+        <div class="row">
+            <div class="imgcite two-col">
+                <img src="img/pyafq_segmentation2.gif">
+            </div>
+            <div class="imgcite two-col">
+                    <img data-fragment-index="2" src="img/right-arrow.png" height=20 style="position:absolute; top:280px; left:420px;">
+        <img src="img/sarica_results2.png" height=300 style="position:absolute; top:200px; left:550px;">
+            </div>
+        <div class="cite" data-fragment-index="2">
+			<a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/hbm.23412">Sarica et al. (2017)</a>
+
+        </div>
+    </section>
+
+	<section>
+        <h3>Tractometry for prediction</h3>
+        <div class="row">
+            <div class="imgcite two-col">
+                <img src="img/pyafq_segmentation2.gif">
+            </div>
+            <div class="imgcite two-col">
+                    <img data-fragment-index="2" src="img/right-arrow.png" height=20 style="position:absolute; top:280px; left:420px;">
+
+                <p style="position:absolute; top:270px; left:550px;">Patient/Control?</p>
+    </section>
+
+    <section>
+        <h2>ALS classification</h2>
+        <img src="./img/sarica-ml.png" height="400">
+		<div class="cite" style="position: absolute; left:380px">
+            <a href="https://www.nature.com/articles/s41467-018-03297-7">Yeatman, Richie-Halford, Smith, Keshavan & <b>Rokem</b> (2018)</a>
+    </div>
+    </section>
+
+    <section>
+        <h2>Challenges</h2>
+        <p class="fragment">Requires a region of interest</p>
+        <p class="fragment">Otherwise: it's like finding a needle in a haystack!</p>
+    </section>
+
+
+    <section>
+        <h2>The accuracy/interpretability tradeoff </h2>
+        <img src="./img/Accuracy-interpretability-tradeoff-0.png" height="500">
+    </section>
+
+    <section>
+        <h2>The accuracy/interpretability tradeoff </h2>
+        <img src="./img/Accuracy-interpretability-tradeoff-1.png" height="500">
+    </section>
+
+    <section>
+        <h2>Diffusion MRI as a generalized linear model</h2>
+        <img src="img/dMRI_group_structure.png" height="450px">
+        <div class="cite" style="position: absolute; left:380px">
+            <a href="https://www.biorxiv.org/content/10.1101/2019.12.19.882928v1">Richie-Halford, Yeatman, Simon & <b>Rokem</b> (2020)</a>
+        </div>
+    </section>
+
+    <section>
+        <h2>Diffusion MRI as a generalized linear model</h2>
+        <img src="img/regression_equation.png" width=600><br>
+        <p class="fragment">The objective:</p>
+        <p class="fragment">Find weights &beta; that minimize the error between the estimated y and the true y </p>
+
+        <img class="fragment" src="img/ols_penalty.png" width="200px">
+
+        <p class="fragment">But in our case p (number of variables) >> n (number of subjects) </p>
+        <p class="fragment">Many different possible solutions!</p>
+        <div class="cite">
+            <a href="https://www.biorxiv.org/content/10.1101/2019.12.19.882928v1">Richie-Halford, Yeatman, Simon & <b>Rokem</b> (2020)</a>
+        </div>
+    </section>
+
+    <section>
+        <h2>The accuracy/interpretability tradeoff </h2>
+        <img src="./img/Accuracy-interpretability-tradeoff-2.png" height="500">
+    </section>
+
+    <section>
+        <h2>Regularization</h2>
+        <p>Get the weights &beta; that minimize the error and are as sparse as possible</p>
+        <p class="fragment">For example: the Lasso (<a href="http://statweb.stanford.edu/~tibs/lasso/lasso.pdf">Tibshirani, 1996</a>)</p>
+        <div class="fragment">
+        <img src="img/lasso_penalty.png" width="400px">
+        <div class="cite">
+
+        </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>The accuracy/interpretability tradeoff </h2>
+        <img src="./img/Accuracy-interpretability-tradeoff-2.png" height="500">
+    </section>
+
+    <section>
+        <h2>The accuracy/interpretability tradeoff </h2>
+        <img src="./img/Accuracy-interpretability-tradeoff-3.png" height="500">
+    </section>
+
+
+    <section>
+        <h2>The accuracy/interpretability tradeoff </h2>
+        <img src="./img/Accuracy-interpretability-tradeoff-4.png" height="500">
+    </section>
+
+        <section>
+            <h2>Diffusion MRI data has group structure</h2>
+            <img src="img/dMRI_group_structure.png" height="500px">
+            <div class="cite">
+                <a href="https://www.biorxiv.org/content/10.1101/2019.12.19.882928v1">Richie-Halford, Yeatman, Simon & <b>Rokem</b> (2020)</a>
+            </div>
+
+        </section>
+
+        <section>
+        <h2>The Group Lasso</h2>
+        <p>Sparsity of groups of &beta;, instead of individual &beta;</p>
+        <p class="fragment">Selects data by tracts</p>
+        <!-- <div class="fragment">
+        <img src="img/group_lasso_penalty.png" width="600px">
+        <p>Where <em>l</em> are groups of variables </p>
+        <p><em>p(l)</em> is the number of variables in group <em>l</em></p>
+        </div> -->
+        <div class="fragment">
+        <h2>Sparse Group Lasso</h2>
+        <p>Sparsity of groups of &beta; <em>and</em> of individual &beta;</p>
+        <p class="fragment">Selects data by tracts <em>and</em> sparsify within tract</p>
+        </div>
+
+        <div class="fragment">
+            The data is used to determine strength of group and individual &beta; sparsity
+            <p class="fragment">
+                Nested cross-validation
+            </p>
+        </div>
+            <div class="cite">
+                <a href="http://www.columbia.edu/~my2550/papers/glasso.final.pdf">Yuan and Lin (2006)</a><br>
+                <a href="https://www.tandfonline.com/doi/abs/10.1080/10618600.2012.681250">Simon et al. (2013)</a><br>
+                <a href="https://www.biorxiv.org/content/10.1101/2019.12.19.882928v1">Richie-Halford, Yeatman, Simon & <b>Rokem</b> (2020)</a>
+        </div>
+        </section>
+
+
+        <section>
+            <h2> Accurately classifies patients/controls</h2>
+            <img src="img/als_classification_results.png" height="450px">
+            <p>Classification accuracy of 93% (+/- 2%) <br> AUC of 0.978 (+/- 0.01)</p>
+            <div class="cite">
+                <a href="https://www.biorxiv.org/content/10.1101/2019.12.19.882928v1">Richie-Halford, Yeatman, Simon & <b>Rokem</b> (2020)</a>
+            </div>
+
+        </section>
+
+        <section>
+            <h2> ALS correlates in white matter are localized</h2>
+            <div style="position: absolute; top:2em; left:6em;">
+            <img src="img/als_coefficients.gif" height="600px">
+            </div>
+            <div class="cite">
+                <a href="https://www.biorxiv.org/content/10.1101/2019.12.19.882928v1">Richie-Halford, Yeatman, Simon & <b>Rokem</b> (2020)</a>
+            </div>
+        </section>
+
+        <section>
+            <h2>Outline</h2>
+            <div align="left">
+            <h3 style="color:#D3D3D3;">Data-driven discovery in human neuroscience</h3>
+            <h4 style="color:#D3D3D3;">Studying brain connections with diffusion MRI </h4>
+            <h4 style="color:#D3D3D3;">Automated tract segmentation and tractometry</h4>
+            <h3>Applications</h3>
+            <h4 style="color:#D3D3D3;">Amyotropic Lateral Sclerosis: finding a needle in a haystack</h4>
+            <h4>Brain development: seeing the forest and the trees</h4>
+            <h3 style="color:#D3D3D3;">Expanding access to data-driven research</h3>
+            <h4 style="color:#D3D3D3;">Publishing data and results in exploratory data visualizations</h4>
+            <h4 style="color:#D3D3D3;">Developing open-source software</h4>
+            <h4 style="color:#D3D3D3;">Training researchers from diverse backgrounds</h4>
+            </div>
+        </section>
+
+        <section>
+            <h2>Cognitive development</h2>
+            <p class="fragment">How do adverse childhood events affect development?</p>
+            <p class="fragment">How do they affect brain connectivity?</p>
+        </section>
+
+        <section>
+            <h2>Brain development</h2>
+            <div class="row">
+                <div class="imgcite two-col fragment">
+                    <img src="img/brain_development1.png" height="400px">
+                <div class="cite" style="position: absolute; top:40em; left:20em;">
+                    <a href="https://www.pnas.org/content/101/21/8174">Gogtay et al. (200)</a>
+                </div>
+
+                </div>
+
+                <div class="imgcite two-col fragment">
+                    <img src="img/brain_development2.png" height="400px">
+                    <div class="cite">
+                        <a href="https://www.frontiersin.org/articles/10.3389/fninf.2019.00029/full">Keshavan, Yeatman and <b>Rokem</b> (2019)</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>And white matter?</h2>
+            <p class="fragment">Cortical thinning reflects myelination (<a href="https://www.pnas.org/content/116/41/20750.abstract">Natu et al., 2019</a>)</p>
+            <p class="fragment">White matter tracts mature in waves over a long time (<a href="https://www.jneurosci.org/content/31/30/10937">Lebel and Beaulieau, 2012)</a></p>
+            <p class="fragment">Challenge: focusing on any particular location risks losing the full picture</p>
+            <p class="fragment">Loses the forest for the trees</p>
+        </section>
+
+        <section>
+            <img src="img/lebel.jpg" height="500px">
+            <div class="cite"><a href="https://www.jneurosci.org/content/31/30/10937">Lebel and Beaulieau, 2012</a></div>
+
+        </section>
+
+        <section>
+            <h2>Brain age</h2>
+            <p>Predictive model of age, based on brain features</p>
+            <img src="img/brain-age0.png" height="500px">
+        </section>
+
+
+        <section>
+            <h2>Brain age</h2>
+            <p>Predictive model of age, based on brain features</p>
+            <img src="img/brain-age1.png" height="500px">
+        </section>
+
+        <section>
+            <h2>Brain age</h2>
+            <p>Predictive model of age, based on brain features</p>
+            <img src="img/brain-age2.png" height="500px">
+        </section>
+
+        <section>
+            <h2>Brain age</h2>
+            <p>Predictive model of age, based on brain features</p>
+            <img src="img/brain-age3.png" height="500px">
+        </section>
+
+        <section>
+            <h2>Brain age</h2>
+            <p>Predictive model of age, based on brain features</p>
+            <img src="img/brain-age4.png" height="500px">
+        </section>
+
+        <section>
+            <h2>Brain age</h2>
+            <p>Predictive model of age, based on brain features</p>
+            <img src="img/brain-age5.png" height="500px">
+        </section>
+
+        <section>
+            <h2>Brain age</h2>
+            <p>Predictive model of age, based on brain features</p>
+            <p class="fragment">The model was constructed based on a publicly available sample of 77 individuals <br>
+                (Yeatman et al. 2014)</p>
+            <p class="fragment">Chronoligical ages 6 - 50</p>
+            <p class="fragment">Sparse group lasso</p>
+            <div class="cite">
+                <a href="https://www.biorxiv.org/content/10.1101/2019.12.19.882928v1">Richie-Halford, Yeatman, Simon & <b>Rokem</b> (2020)</a>
+            </div>
+        </section>
+
+        <section>
+            <h2>Brain age</h2>
+            <img src="img/age_regression.png" height="500px">
+            <br>
+            MAE: 3.6 years, R<sup>2</sup>=0.3
+            <div class="cite">
+                <a href="https://www.biorxiv.org/content/10.1101/2019.12.19.882928v1">Richie-Halford, Yeatman, Simon & <b>Rokem</b> (2020)</a>
+            </div>
+        </section>
+
+        <section>
+            <h2>Multiple white matter correlates</h2>
+            <div style="position: absolute; top:2em; left:6em;">
+            <img src="img/age_coefficients.gif" height="600px">
+            </div>
+            <div style="position: absolute; top:10em; left:25em;">
+                <img src="img/age-color-scale.png" height="150px">
+                </div>
+            <div class="cite">
+                <a href="https://www.biorxiv.org/content/10.1101/2019.12.19.882928v1">Richie-Halford, Yeatman, Simon & <b>Rokem</b> (2020)</a>
+            </div>
+        </section>
+
+        <section>
+            <h2>In some tracts FA increases with age</h2>
+            <h3>Early in development</h3>
+            <img src="img/left_arcuate_age_fa.png">
+            <div class="cite">
+                <a href="https://www.biorxiv.org/content/10.1101/2019.12.19.882928v1">Richie-Halford, Yeatman, Simon & <b>Rokem</b> (2020)</a>
+            </div>
+
+        </section>
+
+        <section>
+            <h2>In some tracts FA increases with age</h2>
+            <h3>Late in development</h3>
+            <img src="img/left_cingulum_cingulate_age_fa.png">
+            <div class="cite">
+                <a href="https://www.biorxiv.org/content/10.1101/2019.12.19.882928v1">Richie-Halford, Yeatman, Simon & <b>Rokem</b> (2020)</a>
+            </div>
+        </section>
+
+
+        <section>
+            <h2>In other tracts FA decreases with age</h2>
+            <img src="img/callosum_forceps_minor_age_fa.png">
+            <div class="cite">
+                <a href="https://www.biorxiv.org/content/10.1101/2019.12.19.882928v1">Richie-Halford, Yeatman, Simon & <b>Rokem</b> (2020)</a>
+            </div>
+        </section>
+
+
+    <section>
+    <h2>Sparse Group Lasso</h2>
+        <p class="fragment">Capitalizes on brain structure</p>
+        <p class="fragment">Accurately classifies ALS patients</p>
+        <p class="fragment">Serves as a basis for a brain age model</p>
+        <p class="fragment">Identifies dense or sparse biological feature sets</p>
+    </section>
+
+    <section>
+        <div class="row">
+            <div class="imgcite two-col">
+                <img src="./img/haystacks.jpg">
+             </div>
+            <div class="imgcite two-col">
+                <img src="./img/forest.png">
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Current and future work</h2>
+        <p class="fragment">Adverse childhood events (Adam Richie-Halford)</p>
+        <p class="fragment">Acquisition of skilled reading and math (w/ Jason Yeatman, Stanford)</p>
+        <p class="fragment">Baseline model of the Human Connectome (John Kruper)</p>
+        <div class="fragment">
+            <h3>Human Connectome Project extensions</h3>
+            <p>Lifespan development</p>
+            <p>Brain aging and dementia</p>
+            <p>Alzheimer's subtypes</p>
+            <p>Anxiety and depression in teenagers</p>
+            <p>Amish Connectome (mental illness)</p>
+            <p>Low vision and blindness</p>
+        </div>
+    </section>
+
+
+    <section>
+        <h2>Outline</h2>
+        <div align="left">
+        <h3 style="color:#D3D3D3;">Data-driven discovery in human neuroscience</h3>
+        <h4 style="color:#D3D3D3;">Studying brain connections with diffusion MRI </h4>
+        <h4 style="color:#D3D3D3;">Automated tract segmentation and tractometry</h4>
+        <h3 style="color:#D3D3D3;">Applications</h3>
+        <h4 style="color:#D3D3D3;">Amyotropic Lateral Sclerosis: finding a needle in a haystack</h4>
+        <h4 style="color:#D3D3D3;">Brain development: seeing the forest and the trees</h4>
+        <h3>Expanding access to data-driven research</h3>
+        <h4 style="color:#D3D3D3;">Publishing data and results in exploratory data visualizations</h4>
+        <h4 style="color:#D3D3D3;">Developing open-source software</h4>
+        <h4 style="color:#D3D3D3;">Training researchers from diverse backgrounds</h4>
+        </div>
+    </section>
+
+    <section>
+        <div class="row">
+            <div class="imgcite two-col fragment">
+
+                <img src="img/eScience-infographic.png" height=450>
+            </div>
+
+            <div class="imgcite two-col fragment">
+                <p class="fragment">
+                Data-driven research
+                </p>
+
+                <p class="fragment">
+                    Building a data science community: open, rigorous and ethical
+                </p>
+                <p class="fragment">
+                    Development of tools and practices for reproducible research
+                </p>
+                <p class="fragment">
+                    Data science education
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Outline</h2>
+        <div align="left">
+        <h3 style="color:#D3D3D3;">Data-driven discovery in human neuroscience</h3>
+        <h4 style="color:#D3D3D3;">Studying brain connections with diffusion MRI </h4>
+        <h4 style="color:#D3D3D3;">Automated tract segmentation and tractometry</h4>
+        <h3 style="color:#D3D3D3;">Applications</h3>
+        <h4 style="color:#D3D3D3;">Amyotropic Lateral Sclerosis: finding a needle in a haystack</h4>
+        <h4 style="color:#D3D3D3;">Brain development: seeing the forest and the trees</h4>
+        <h3>Expanding access to data-driven research</h3>
+        <h4>Publishing data and results in exploratory data visualizations</h4>
+        <h4 style="color:#D3D3D3;">Developing open-source software</h4>
+        <h4 style="color:#D3D3D3;">Training researchers from diverse backgrounds</h4>
+        </div>
+    </section>
+
+    <section>
+        <p class="fragment">Results from large multi-dimensional datasets are hard to understand</p>
+		<p class="fragment">Hard to communicate</p>
+		<p class="fragment">Hard to reproduce</p>
+		<h3 class="fragment">Solution: tools for exploration with data sharing built in!</h3>
+	</section>
+
+	<section>
+		<h3>A browser-based tool for visualization and analysis of diffusion MRI data</h3>
+        <p class="fragment">A web-based application</p>
+        <p class="fragment">Leverages modern visualization frameworks</p>
+		<p class="fragment">Builds a web-site for a diffusion MRI dataset</p>
+		<p class="fragment">Automatically uploads the website to GitHub</p>
+		<div class="cite" style="position: absolute; left:380px">
+			<a href="https://www.nature.com/articles/s41467-018-03297-7">Yeatman, Richie-Halford, Smith, Keshavan & <b>Rokem</b> (2018)</a>
+		</div>
+	</section>
+
+
+	<section>
+		<h3><a href="https://yeatmanlab.github.io/Sarica_2017">https://yeatmanlab.github.io/Sarica_2017</a></h3>
+
+		<video width="800" autoplay loop>
+			<source src="./img/afq-browser-demo.mp4">
+		</video>
+
+		<div class="cite" style="position: absolute; left:380px">
+            <a href="https://www.nature.com/articles/s41467-018-03297-7">Yeatman, Richie-Halford, Smith, Keshavan & <b>Rokem</b> (2018)</a>
+        </div>
+
+	</section>
+
+    <section>
+		<h2> Exploratory data analysis</h2>
+
+		<p class="fragment">Enhances published results<p>
+		<p class="fragment">Linked visualizations facilitate easy exploration</p>
+        <p class="fragment">Enables new discoveries in old datasets</p>
+        <p class="fragment">Generates hypotheses for new research</p>
+
+		<div class="cite" style="position: absolute; left:380px">
+            <a href="https://www.nature.com/articles/s41467-018-03297-7">Yeatman, Richie-Halford, Smith, Keshavan & <b>Rokem</b> (2018)</a>
+        </div>
+	</section>
+
+	<section>
+		<h2>Automatic data sharing</h2>
+
+		<img src="./img/afq-browser-static.png" height="400px">
+
+		<svg class="fragment" data-fragment-index="1" width="400" height="110"  style="position: absolute; left:435px; top:435px;">
+			<rect rx="10" ry="10" width="150" height="60" style="fill:yellow;stroke-width:3;stroke:rgb(1,0,0);opacity:0.4;" />
+		</svg>
+        <p class="fragment" data-fragment-index="2" style="position: absolute; top:500px; left:400px;">
+        <a href="http://afqvault.org">http://afqvault.org</a>
+        </p>
+		<div class="cite" style="position: absolute; left:380px">
+                <a href="https://www.nature.com/articles/s41467-018-03297-7">Yeatman, Richie-Halford, Smith, Keshavan & <b>Rokem</b> (2018)</a>
+        </div>
+	</section>
+
+	<section>
+        <h2>Data sharing broadens access</h2>
+        <p class="fragment">MRI data analysis requires specific expertise</p>
+        <p class="fragment">Tract segmentation and tractometry generates data in a tidy table format (CSV)</p>
+        <p class="fragment">Facilitates interdisciplinary collaboration</p>
+		<div class="cite" style="position: absolute; left:380px">
+            <a href="https://www.nature.com/articles/s41467-018-03297-7">Yeatman, Richie-Halford,  Smith, Keshavan & <b>Rokem</b> (2018)</a>
+        </div>
+	</section>
+
+    <section>
+        <h2>Facilitates reproducibility</h2>
+        <img src="img/nas_cover.png" height=350><br>
+        <img src="img/nas.png" height=120 align="center">
+    </section>
+
+    <section>
+        <h2>Outline</h2>
+        <div align="left">
+        <h3 style="color:#D3D3D3;">Data-driven discovery in human neuroscience</h3>
+        <h4 style="color:#D3D3D3;">Studying brain connections with diffusion MRI </h4>
+        <h4 style="color:#D3D3D3;">Automated tract segmentation and tractometry</h4>
+        <h3 style="color:#D3D3D3;">Applications</h3>
+        <h4 style="color:#D3D3D3;">Amyotropic Lateral Sclerosis: finding a needle in a haystack</h4>
+        <h4 style="color:#D3D3D3;">Brain development: seeing the forest and the trees</h4>
+        <h3>Expanding access to data-driven research</h3>
+        <h4 style="color:#D3D3D3;">Publishing data and results in exploratory data visualizations</h4>
+        <h4>Developing open-source software for science</h4>
+        <h4 style="color:#D3D3D3;">Training researchers from diverse backgrounds</h4>
+        </div>
+    </section>
+
+
+    <section>
+        <h2> Community-developed open-source software</h2>
+        <div class="row fragment" data-fragment-index="1">
+        <div class="imgcite two-col">
+            <div style="position: absolute; left:2em; top:3em">
+                <img src="img/nipy-logo.png"  align=middle height=200 width=200>
+                <br>
+                Neuroimaging in Python
+                <p class="fragment">
+                A community of practice
+                <p class="fragment">
+                Many different projects
+                <br>
+                <a href="nipy.org">http://nipy.org</a>
+            </div>
+        </div>
+        <div class="imgcite two-col fragment">
+            <img src="img/dipy-logo.png">
+            Diffusion Imaging in Python
+            <p class="fragment">
+            Comprehensive
+            <p class="fragment">
+            Thoroughly tested
+            <p class="fragment">
+            Well-documented
+            <br>
+            <a href="dipy.org">http://dipy.org</a>
+            <div class="cite" style="position: absolute; left:0px">
+                    <a href="https://www.frontiersin.org/articles/10.3389/fninf.2014.00008/full">Garyfallidis, Brett, Amirbekian, <b>Rokem</b>, van der Walt, Descoteaux, Nimmo Smith, and DIPY contributors (2014) Frontiers in Neuroinformatics</a>
+            </div>
+        </div>
+    </div>
+    </section>
+
+    <section>
+        <h2>Open to users</h2>
+        <img src="img/dipy-pip-installs.png">
+        <div class="cite" style="position: absolute; left:0px">
+            <a href="https://www.frontiersin.org/articles/10.3389/fninf.2014.00008/full">Garyfallidis, Brett, Amirbekian, <b>Rokem</b>, van der Walt, Descoteaux, Nimmo Smith, and DIPY contributors (2014) Frontiers in Neuroinformatics</a>
+        </div>
+    </section>
+
+    <section>
+            <h2>Open to contributors</h2>
+            <img src="img/dipy_contributors.png">
+            <div class="cite" style="position: absolute; left:0px">
+            <a href="https://www.frontiersin.org/articles/10.3389/fninf.2014.00008/full">Garyfallidis, Brett, Amirbekian, <b>Rokem</b>, van der Walt, Descoteaux, Nimmo Smith, and DIPY contributors (2014) Frontiers in Neuroinformatics</a>
+            </div>
+    </section>
+
+
+
+    <section>
+        <h2>Distributed collaboration</h2>
+        <img src="img/dipy_global.png">
+        <div class="cite" style="position: absolute; left:0px">
+        <a href="https://www.frontiersin.org/articles/10.3389/fninf.2014.00008/full">Garyfallidis, Brett, Amirbekian, <b>Rokem</b>, van der Walt, Descoteaux, Nimmo Smith, and DIPY contributors (2014) Frontiers in Neuroinformatics</a>
+        </div>
+    </section>
+
+	<section>
+		<h2>How can we get more people involved?</h2>
+        <p class="fragment">Developing software requires expertise</p>
+        <p class="fragment">Learning methods for data-driven research requires substantial hands-on experience</p>
+    </section>
+
+    <section>
+        <h2>Outline</h2>
+        <div align="left">
+        <h3 style="color:#D3D3D3;">Data-driven discovery in human neuroscience</h3>
+        <h4 style="color:#D3D3D3;">Studying brain connections with diffusion MRI </h4>
+        <h4 style="color:#D3D3D3;">Automated tract segmentation and tractometry</h4>
+        <h3 style="color:#D3D3D3;">Applications</h3>
+        <h4 style="color:#D3D3D3;">Amyotropic Lateral Sclerosis: finding a needle in a haystack</h4>
+        <h4 style="color:#D3D3D3;">Brain development: seeing the forest and the trees</h4>
+        <h3>Expanding access to data-driven research</h3>
+        <h4 style="color:#D3D3D3;">Publishing data and results in exploratory data visualizations</h4>
+        <h4 style="color:#D3D3D3;">Developing open-source software</h4>
+        <h4>Training researchers from diverse backgrounds</h4>
+        </div>
+    </section>
+
+	<section>
+		<h2>How can we get more people involved?</h2>
+	    <p>Developing software requires expertise</p>
+        <p>Learning methods for data-driven research requires substantial hands-on experience</p>
+        <img class="fragment" src="img/HackSpectrum0.png" height="400">
+
+        <div class="cite" style="position: absolute; top:650px; left:450px">
+            <a href="https://www.pnas.org/content/115/36/8872"> Huppenkothen, Arendt, Hogg, Ram, Vanderplas & <b>Rokem</b> (2018)</a>
+        </div>
+
+    </section>
+
+    <section>
+        <div class="row">
+            <div class="imgcite two-col fragment">
+                <img src="img/carpentries-logo.png">
+                <img class="fragment" src="img/swc-logo.png" height="133px" width="200px">
+                <img class="fragment" src="img/dc-logo.png" height="133px" width="200px">
+            </div>
+        <div class="imgcite two-col fragment">
+            <p>Science hackathons</p>
+            <p><a href="http://brainhack.org">http://brainhack.org</a></p>
+            <div class="cite" style="position: absolute; left:600px">
+                    <a href="https://gigascience.biomedcentral.com/articles/10.1186/s13742-016-0121-x"> Craddock et al. (2016) Gigascience</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Hack weeks</h2>
+        <p class="fragment">Week-long events</p>
+        <p class="fragment">Combination of learning and project work</p>
+        <p class="fragment">
+            Astro hack week
+        </p>
+        <p class="fragment">
+            Geo hack week
+        </p>
+        <p class="fragment">
+            Neuro hack week
+        </p>
+        <p class="fragment">A fine balance of pedagogy and hacking</a></p>
+
+    </section>
+
+
+    <section>
+        <h2>Hack weeks</h2>
+        <p>Week-long events</p>
+        <p>Combination of learning and project work</p>
+        <p>A fine balance of pedagogy and hacking</a></p>
+
+        <div>
+        <img src="img/HackSpectrum.png" height="350">
+        </div>
+        <div class="cite" style="position: absolute; top:650px; left:450px">
+                <a href="https://www.pnas.org/content/115/36/8872"> Huppenkothen, Arendt, Hogg, Ram, Vanderplas & <b>Rokem</b> (2018)</a>
+        </div>
+    </section>
+
+	<section>
+        <a href="http://neurohackademy.org/">NeuroHackademy: A Summer Institute in Neuroscience and Data Science</a><br>
+        <img src="img/neurohack-collage.png" height="400">
+        <p>
+        <img src="img/nimh-logo.gif" height="50px">
+        </p>
+    </section>
+
+    <section>
+        <h2>NeuroHackademy 2020 goes online!</h2>
+
+        <a href="https://neurohackademy.org/apply/">https://neurohackademy.org/apply/</a>
+
+    </section>
+
+    <section>
+        <h2>Outline</h2>
+        <div align="left">
+        <h3>Data-driven discovery in human neuroscience</h3>
+        <h4>Studying brain connections with diffusion MRI </h4>
+        <h4>Automated tract segmentation and tractometry</h4>
+        <h3>Applications</h3>
+        <h4>Amyotropic Lateral Sclerosis: finding a needle in a haystack</h4>
+        <h4>Brain development: seeing the forest and the trees</h4>
+        <h3>Expanding access to data-driven research</h3>
+        <h4>Publishing data and results in exploratory data visualizations</h4>
+        <h4>Developing open-source software</h4>
+        <h4>Training researchers from diverse backgrounds</h4>
+        </div>
+    </section>
+
+
+
+	<section>
+
+		<h2> Thanks! </h2>
+		<div style="position: absolute; left:0px; top:100px;" align="left">
+			Adam Richie-Halford
+			<br>
+            John Kruper
+            <br>
+			Anisha Keshavan
+			<br>
+            Josh Smith
+			<br>
+			Jason Yeatman (Stanford)
+			<br>
+			Noah Simon (UW Biostats)
+			<br>
+			Eleftherios Garyfallidis (IU)
+			<br>
+			Tal Yarkoni (UT Austin)
+			<br>
+			Daniela Huppenkothen (UW Astronomy)
+			<br>
+            Anthony Arendt (APL)
+		</div>
+
+		<div style="position: absolute; left:500px; top:80px;">
+			<img src="img/msdse-sponsors.png" height="50px">
+			<br>
+			<img src="img/nimh-logo.gif" height="50px">
+			<img src="img/nibib-logo.png" height="50px">
+			<br>
+			<img src="img/BMGF-logo.png" height="100px">
+			<img src="img/nsf-logo.jpeg" height="100px">
+			<br>
+			<img src="img/eScience.png" height="80px">
+		</div>
+
+	</section>
+
+	<section>
+
+			<div style="position:absolute; left: 200px; top:-120px;">
+			<h2>Contact information</h2>
+			</div>
+			<div style="position:absolute; left: 220px; top:-50px;">
+			<img src="img/globe-xxl.png" width="100px;" >
+			<div style="position:absolute; left: 120px; top:40px;">http://arokem.org
+			</div>
+			</div>
+			<div style="position:absolute; left: 220px; top:70px;">
+			<img src="img/email-11-xxl.png" width="100px;" >
+			<div style="position:absolute; left: 120px; top:40px;">arokem@gmail.com
+			</div>
+			</div>
+			<div style="position:absolute; left: 220px; top:190px;">
+			<img src="img/twitter-xxl.png" width="100px;" >
+			<div style="position:absolute; left: 120px; top:40px;">@arokem
+			</div>
+			</div>
+			<div style="position:absolute; left: 220px; top:310px;">
+			<img src="img/github-6-xxl.png" width="100px;" >
+			<div style="position:absolute; left: 120px; top:40px;">github.com/arokem
+			</div>
+			</div>
+
+	</section>
+
+    <section>
+        <h4>Automated detection of glaucoma with interpretable machine learning using clinical data and multi-modal retinal images</h4>
+        <div style="position: absolute; left:0px; top:120px;">
+			<img src="img/parmita.jpeg" height="250">
+			<br>
+			<small>Parmita Mehta  <br> (UW CSE)</small>
+		</div>
+
+        <div style="position: absolute; left:250px; top:120px;">
+			<img src="img/aaron.jpeg" height="250">
+			<br>
+			<small>Aaron Lee <br> (UW Ophthalmology)</small>
+        </div>
+
+        <div style="position: absolute; left:500px; top:120px;">
+            <image src="img/glaucoma_tree_shap.png" height=300>
+        </div>
+        <div class="cite" style="position: absolute; left:200px">
+        Mehta, Petersen, Wen, Bannit, Chen, Bojkian, Egan, Lee, Balazinska, Lee, <b>Rokem</b> (<a href="https://www.biorxiv.org/content/10.1101/2020.02.26.967208v1">2020</a>)</div>
+
+    </section>
+
+    <section>
+        <h2>Nested cross-validation</h2>
+        <img src="img/NestedCrossValidation1.png" height="400px">
+        <div class="cite" style="position: absolute; left:380px">
+            <a href="https://www.biorxiv.org/content/10.1101/2019.12.19.882928v1">Richie-Halford, Yeatman, Simon & <b>Rokem</b> (2020)</a>
+        </div>
+
+    </section>
+
+    <section>
+        <h2>Nested cross-validation</h2>
+        <img src="img/NestedCrossValidation2.png" height="400px">
+        <div class="cite" style="position: absolute; left:380px">
+            <a href="https://www.biorxiv.org/content/10.1101/2019.12.19.882928v1">Richie-Halford, Yeatman, Simon & <b>Rokem</b> (2020)</a>
+        </div>
+
+    </section>
+
+    <section>
+        <h2>Nested cross-validation</h2>
+        <img src="img/NestedCrossValidation3.png" height="400px">
+        <div class="cite" style="position: absolute; left:380px">
+            <a href="https://www.biorxiv.org/content/10.1101/2019.12.19.882928v1">Richie-Halford, Yeatman, Simon & <b>Rokem</b> (2020)</a>
+        </div>
+    </section>
+
+
+	</div>
+	</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				history: true,
+				controls: false,
+				progress: true,
+				center: true,
+
+				transition: 'fade', // none/fade/slide/convex/concave/zoom
+
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+
+	</body>
+</html>
